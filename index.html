@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Gửi Lời Chúc Tới Nàng 🌸</title>
+<style>
+  body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(135deg,#fff7fb,#ffe6ec);
+    font-family:"Segoe UI", Roboto, sans-serif;
+    overflow:hidden;
+  }
+
+  .container{
+    position:relative;
+    width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+  }
+
+  .content{
+    margin-top:6vh;
+    width:90%;
+    max-width:800px;
+    height:70vh;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    text-align:center;
+    z-index:5;
+    padding:10px;
+  }
+
+  h1{
+    font-family:"Dancing Script", cursive;
+    font-size:28px; /* giảm nhẹ 2px như bạn muốn */
+    color:#f35fa2;
+    margin:6px 0 8px 0;
+  }
+
+  h2{
+    font-size:17px;
+    color:#6b486b;
+    margin-bottom:16px;
+  }
+
+  #message{
+    font-size:18px;
+    color:#333;
+    line-height:1.6;
+    white-space:pre-wrap;
+  }
+
+  .tree-wrap{
+    position:absolute;
+    bottom:-10px;
+    right:50%;
+    transform:translateX(50%);
+    width:400px;
+    animation:pulse 3s ease-in-out infinite;
+    pointer-events:none;
+    z-index:3;
+  }
+  .tree-wrap img{width:100%;display:block;user-select:none;}
+
+  @keyframes pulse{
+    0%,100%{transform:translateX(50%) scale(1);}
+    50%{transform:translateX(50%) scale(1.03);}
+  }
+
+  .heart{
+    position:absolute;
+    will-change:transform,opacity;
+    pointer-events:none;
+    z-index:2;
+    opacity:0.9;
+  }
+
+  .btn{
+    position:absolute;
+    bottom:24px;
+    right:30px;
+    background:#ff4f8b;
+    border:none;
+    color:white;
+    padding:10px 20px;
+    border-radius:28px;
+    cursor:pointer;
+    font-size:15px;
+    box-shadow:0 3px 6px rgba(0,0,0,0.25);
+    z-index:10;
+  }
+  .btn:active{transform:translateY(2px);}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="content">
+      <h1>Ngày của em — hãy tỏa sáng như chính nụ cười ấy ✨ 🌸</h1>
+      <div id="message"></div>
+    </div>
+
+    <div class="tree-wrap">
+      <img id="treeImg" src="pngtree-vector-love-tree-png-image_12898748.png" alt="Cây trái tim">
+    </div>
+
+    <button class="btn" id="startBtn">💌 Gửi lời chúc tới nàng</button>
+
+    <!-- 🎵 Nhạc nền trẻ trung, không bản quyền -->
+    <audio id="bgm" loop preload="auto" playsinline>
+      <source src="d:\gửi lời chúc\phong thuỷ\Nhac Chuong Yeu Em Rat Nhieu - Hoang Ton.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <script>
+    const messageEl=document.getElementById('message');
+    const text=`NNhân ngày 20/10 – Ngày Phụ nữ Việt Nam, chúc bạn luôn xinh đẹp, hạnh phúc và tràn đầy năng lượng.
+   🌷 Mong rằng mỗi ngày trôi qua đều mang đến cho bạn những niềm vui bất ngờ, nụ cười rạng rỡ và những khoảnh khắc đáng nhớ.
+   🌸Hãy luôn tự tin, yêu thương bản thân và tỏa sáng theo cách riêng của bạn!
+   💐 Cuộc sống ngập tràn niềm vui, sức khỏe và hạnh phúc viên mãn.
+Chúc bạn luôn là “nữ thần may mắn”, lan toả năng lượng tốt đẹp đến mọi người xung quanh 💖✨`;
+
+    let idx=0, started=false;
+
+    function typeChar(){
+      if(idx<text.length){
+        messageEl.textContent+=text.charAt(idx);
+        idx++;
+        setTimeout(typeChar,55);
+      }else{
+        // 🔁 Khi chạy hết, chờ 3s rồi lặp lại
+        setTimeout(()=>{
+          messageEl.textContent="";
+          idx=0;
+          typeChar();
+        },3000);
+      }
+    }
+
+    const tree=document.getElementById('treeImg');
+    const colors=['💖','💗','💞','💕','💓','💘','❤️'];
+    function createHeart(){
+      const rect=tree.getBoundingClientRect();
+      const heart=document.createElement('div');
+      heart.className='heart';
+      heart.textContent=colors[Math.floor(Math.random()*colors.length)];
+      const size=14+Math.random()*16;
+      heart.style.fontSize=size+'px';
+      heart.style.left=(rect.left+rect.width*(0.25+Math.random()*0.5))+'px';
+      heart.style.top=(rect.top+rect.height*(0.1+Math.random()*0.3))+'px';
+      document.body.appendChild(heart);
+
+      const translateX=-120+Math.random()*240;
+      const translateY=window.innerHeight*0.6+Math.random()*100;
+      const rotate=180+Math.random()*360;
+      const duration=4500+Math.random()*2000;
+
+      heart.animate([
+        {transform:`translate(0,0) rotate(0deg)`,opacity:1},
+        {transform:`translate(${translateX}px,${translateY}px) rotate(${rotate}deg)`,opacity:0}
+      ],{duration,easing:'linear',fill:'forwards'});
+
+      setTimeout(()=>heart.remove(),duration);
+    }
+
+    const bgm=document.getElementById('bgm');
+    const btn=document.getElementById('startBtn');
+
+    btn.addEventListener('click',()=>{
+      if(started) return;
+      started=true;
+      bgm.volume=0.7;
+      bgm.play().catch(()=>{});
+      typeChar();
+      setInterval(createHeart,700);
+      startConfetti();
+      btn.disabled=true;
+      btn.textContent="💞 Đang gửi...";
+    });
+
+    function startConfetti(){
+      const duration=1600;
+      const end=Date.now()+duration;
+      (function frame(){
+        confetti({
+          particleCount:8,
+          startVelocity:25,
+          spread:120,
+          origin:{x:Math.random(),y:0.1}
+        });
+        if(Date.now()<end)requestAnimationFrame(frame);
+      })();
+    }
+  </script>
+</body>
+</html>
